@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Models\User;
+use App\Http\Controllers\WorkDayController;
+
 
 
 Route::get('/', function () {
@@ -42,7 +44,22 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/workdays', [WorkDayController::class, 'adminIndex'])->name('workdays.index');
+    Route::post('/workdays/{workDay}/comment', [WorkDayController::class, 'comment'])->name('workdays.comment');
 
+
+});
+
+// EMPLOYEE
+Route::middleware(['auth', 'role:employee,manager,admin'])->prefix('employee')->name('employee.')->group(function () {
+    Route::get('/workdays', [WorkDayController::class, 'employeeIndex'])->name('workdays.index');
+    Route::post('/workdays/{workDay}/comment', [WorkDayController::class, 'comment'])->name('workdays.comment');
+});
+
+// MANAGER/ADMIN: dodawanie godzin pracownikom
+Route::middleware(['auth', 'role:manager,admin'])->prefix('manager')->name('manager.')->group(function () {
+    Route::get('/workdays/create', [WorkDayController::class, 'managerCreate'])->name('workdays.create');
+    Route::post('/workdays', [WorkDayController::class, 'managerStore'])->name('workdays.store');
 });
 
 require __DIR__.'/auth.php';

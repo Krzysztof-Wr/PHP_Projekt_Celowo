@@ -16,6 +16,11 @@
                     </div>
                 @endif
 
+                <a class="ml-3 inline-block px-4 py-2 rounded border" href="{{ route('admin.workdays.index') }}">
+                    Podgląd godzin
+                </a>
+
+
                 <a class="px-4 py-2 bg-black text-white rounded" href="{{ route('admin.users.create') }}">
                     
                     + Dodaj użytkownika
