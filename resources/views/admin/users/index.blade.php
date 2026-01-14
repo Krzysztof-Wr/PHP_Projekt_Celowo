@@ -30,6 +30,7 @@
                             <th class="text-left py-2">Email</th>
                             <th class="text-left py-2">Rola</th>
                             <th class="text-left py-2">Utworzono</th>
+                            <<th class="text-left py-2">Akcje</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,30 @@
                                 <td class="py-2">{{ $user->email }}</td>
                                 <td class="py-2">{{ $user->role }}</td>
                                 <td class="py-2">{{ $user->created_at }}</td>
+                                <td class="py-2">{{ $user->created_at }}</td>
+                                <td class="py-2">
+                                    <a
+                                        href="{{ route('admin.users.edit', $user) }}"
+                                        class="text-blue-600 hover:underline mr-3"
+                                    >
+                                        Edytuj
+                                    </a>
+
+                                    <form
+                                        action="{{ route('admin.users.destroy', $user) }}"
+                                        method="POST"
+                                        class="inline"
+                                        onsubmit="return confirm('Na pewno usunąć użytkownika?')"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="text-red-600 hover:underline">
+                                            Usuń
+                                        </button>
+                                    </form>
+                                </td>
+
                             </tr>
                         @endforeach
                     </tbody>

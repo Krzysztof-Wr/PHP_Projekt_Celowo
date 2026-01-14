@@ -8,6 +8,8 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+
 
 
 class UserController extends Controller
@@ -42,5 +44,53 @@ public function store(Request $request): RedirectResponse
 
     return redirect()->route('admin.users.index')->with('success', 'Użytkownik dodany.');
 }
+
+public function edit(User $user): View
+{
+    return view('admin.users.edit', compact('user'));
+}
+
+public function update(Request $request, User $user): RedirectResponse
+{
+    $validated = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => [
+            'required',
+            'email',
+            'max:255',
+            Rule::unique('users', 'email')->ignore($user->id),
+        ],
+        'role' => ['required', 'in:employee,manager,admin'],
+        // hasło opcjonalne przy edycji:
+        'password' => ['nullable', 'string', 'min:8'],
+    ]);
+
+    $data = [
+        'name' => $validated['name'],
+        'email' => $validated['email'],
+        'role' => $validated['role'],
+    ];
+
+    if (!empty($validated['password'])) {
+        $data['password'] = Hash::make($validated['password']);
+    }
+
+    $user->update($data);
+
+    return redirect()->route('admin.users.index')->with('success', 'Użytkownik zaktualizowany.');
+}
+
+public function destroy(User $user): RedirectResponse
+{
+    // Proste zabezpieczenie: admin nie usuwa sam siebie
+    if (auth()->id() === $user->id) {
+        return redirect()->route('admin.users.index')->with('success', 'Nie możesz usunąć samego siebie.');
+    }
+
+    $user->delete();
+
+    return redirect()->route('admin.users.index')->with('success', 'Użytkownik usunięty.');
+}
+
 
 }
