@@ -1,0 +1,44 @@
+## Instrukcja uruchomienia projektu
+
+1. Sklonować / pobrać projekt
+2. Utworzyć bazę danych (`celowo`)
+3. Skonfigurować plik `.env`
+4. Uruchomić migracje:
+    "php artisan migrate"
+5. Uruchomić serwer:
+    "php artisan serve"
+6. Uruchomić frontend:
+    "npm run dev"
+
+### Logowanie
+1. Wejdź na stronę główną aplikacji
+2. Zarejestruj konto lub zaloguj się
+3. Dostępne funkcje zależą od roli użytkownika
+
+### Employee (pracownik)
+- widzi swoje godziny pracy
+- może filtrować wpisy po miesiącu
+- może dodawać komentarze do dni pracy
+
+1. "/employee/workdays"
+
+### Manager
+- dodaje godziny pracy pracownikom
+- wybiera pracownika, datę i liczbę godzin
+
+1. "/manager/workdays/create"
+
+### Admin
+- zarządza użytkownikami (CRUD)
+- przegląda wszystkie godziny pracy
+- filtruje wpisy po miesiącu i pracowniku
+- może dodawać komentarze
+
+1. "/admin/users"
+2. "/admin/workdays"
+
+### Scenariusz:
+1. Admin dodaje użytkowników i przypisuje role
+2. Manager dodaje godziny pracy pracownikom
+3. Employee sprawdza swoje godziny i komentuje wpisy
+4. Admin ma pełny podgląd danych w systemie
