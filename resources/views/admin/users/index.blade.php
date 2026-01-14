@@ -9,6 +9,19 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
 
+            <div class="mb-4">
+                @if (session('success'))
+                    <div class="mb-4 p-3 border border-green-300 bg-green-50 text-green-800 rounded">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <a class="px-4 py-2 bg-black text-white rounded" href="{{ route('admin.users.create') }}">
+                    
+                    + Dodaj użytkownika
+                </a>
+            </div>
+
                 <table class="min-w-full text-sm">
                     <thead>
                         <tr class="border-b">
